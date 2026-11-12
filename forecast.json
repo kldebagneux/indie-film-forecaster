@@ -1,0 +1,74 @@
+{
+  "film": "Behemoth!",
+  "studio": "Searchlight Pictures",
+  "release_date": "2026-12-02",
+  "budget": 36000000,
+  "genres": "Music|Drama",
+  "rating": "R",
+  "competing_releases_that_week": 48,
+  "forecast_most_likely": 35340263,
+  "forecast_range_50pct": [
+    16503175,
+    72649777
+  ],
+  "tier_probabilities": {
+    "underperform (<1x budget)": 0.19,
+    "solid (1-3x)": 0.62,
+    "breakout (>3x)": 0.19
+  },
+  "main_drivers": [
+    {
+      "feature": "log_budget",
+      "effect": "down"
+    },
+    {
+      "feature": "is_sequel",
+      "effect": "down"
+    },
+    {
+      "feature": "Horror",
+      "effect": "down"
+    },
+    {
+      "feature": "runtime",
+      "effect": "up"
+    }
+  ],
+  "comparables": [
+    {
+      "title": "Beau Is Afraid",
+      "studio": "A24",
+      "year": 2023,
+      "budget": 35000000,
+      "revenue": 12337378
+    },
+    {
+      "title": "Phantom Thread",
+      "studio": "Focus Features",
+      "year": 2017,
+      "budget": 35000000,
+      "revenue": 47756590
+    },
+    {
+      "title": "Poor Things",
+      "studio": "Searchlight Pictures",
+      "year": 2023,
+      "budget": 35000000,
+      "revenue": 117607117
+    },
+    {
+      "title": "T\u00c1R",
+      "studio": "Focus Features",
+      "year": 2022,
+      "budget": 35000000,
+      "revenue": 29048571
+    },
+    {
+      "title": "The Sisters Brothers",
+      "studio": "Annapurna Pictures",
+      "year": 2018,
+      "budget": 38000000,
+      "revenue": 13143056
+    }
+  ]
+}
