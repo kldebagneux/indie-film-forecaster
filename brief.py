@@ -85,51 +85,50 @@ if actual:
 page = f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{e(forecast["film"])} – Pre-release brief</title>
 <style>
-:root{{--ink:#141414;--muted:#6b6b6b;--line:#e6e4df;--bg:#faf9f6;--card:#fff;--accent:#141414;
---good:#2f7d5b;--mid:#c9a227;--bad:#b4493a;--band:#e9e6de}}
+:root{{--ink:#f2f0ea;--muted:#8a877f;--line:#2a2a2a;--bg:#0b0b0b;--card:#121212;--accent:#f2f0ea;
+--good:#7fbf9a;--mid:#d8c37a;--bad:#d97a6a;--band:#2b2a27}}
 *{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);
-font:15px/1.55 -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}}
-.wrap{{max-width:860px;margin:0 auto;padding:40px 24px 60px}}
-.eyebrow{{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}}
-h1{{font-size:40px;line-height:1.1;margin:6px 0 4px;letter-spacing:-.02em}}
-.meta{{color:var(--muted);font-size:14px}}
-.headline{{font-size:21px;margin:22px 0 6px;font-weight:600}}
-.lede{{color:#333;margin:0 0 26px}}
-.kpis{{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}}
-.kpi{{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}}
-.kpi b{{display:block;font-size:28px;letter-spacing:-.01em}}.kpi span{{color:var(--muted);font-size:13px}}
-.card{{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;margin-bottom:16px}}
-h2{{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:600}}
+font:15px/1.55 "Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}}
+.wrap{{max-width:880px;margin:0 auto;padding:56px 24px 72px}}
+.eyebrow{{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}}
+h1{{font-size:72px;line-height:.95;margin:14px 0 14px;letter-spacing:-.04em;font-weight:700;text-transform:uppercase}}
+.meta{{color:var(--muted);font-size:13px;letter-spacing:.04em;padding-bottom:22px;border-bottom:1px solid var(--line)}}
+.headline{{font-size:24px;margin:30px 0 8px;font-weight:600;letter-spacing:-.01em}}
+.lede{{color:#c9c6be;margin:0 0 30px;max-width:680px}}
+.kpis{{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:22px}}
+.kpi{{background:var(--bg);padding:20px}}
+.kpi b{{display:block;font-size:34px;letter-spacing:-.03em;font-weight:700}}.kpi span{{color:var(--muted);font-size:11px;letter-spacing:.18em;text-transform:uppercase}}
+.card{{background:var(--card);border:1px solid var(--line);padding:22px;margin-bottom:16px}}
+h2{{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;font-weight:600}}
 .range{{position:relative;height:74px;margin:30px 6px 6px}}
-.axis{{position:absolute;top:34px;left:0;right:0;height:2px;background:var(--line)}}
-.band{{position:absolute;top:24px;height:22px;background:var(--band);border-radius:4px}}
+.axis{{position:absolute;top:34px;left:0;right:0;height:1px;background:#3a3a3a}}
+.band{{position:absolute;top:24px;height:22px;background:var(--band)}}
 .midmark{{position:absolute;top:18px;width:3px;height:34px;background:var(--accent);transform:translateX(-50%)}}
-.midmark span{{position:absolute;top:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:600;font-size:13px}}
-.dot{{position:absolute;top:30px;width:10px;height:10px;border-radius:50%;background:#9a958a;transform:translateX(-50%);border:2px solid #fff}}
-.mark{{position:absolute;top:14px;height:42px;border-left:2px dashed;transform:translateX(-1px)}}
+.midmark span{{position:absolute;top:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:700;font-size:13px}}
+.dot{{position:absolute;top:30px;width:9px;height:9px;border-radius:50%;background:#77746c;transform:translateX(-50%);border:2px solid var(--card)}}
+.mark{{position:absolute;top:14px;height:42px;border-left:1px dashed;transform:translateX(-1px)}}
 .mark span{{position:absolute;top:44px;left:0;transform:translateX(-50%);white-space:nowrap;font-size:12px}}
-.mark.budget{{border-color:#9a958a;color:var(--muted)}}.mark.actual{{border-color:var(--good);color:var(--good);font-weight:600}}
-.rlabels{{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:16px}}
-.legend{{font-size:12px;color:var(--muted);margin-top:10px}}
-.legend i{{display:inline-block;width:9px;height:9px;border-radius:50%;background:#9a958a;margin:0 4px 0 0}}
-.legend em{{display:inline-block;width:18px;height:9px;background:var(--band);border-radius:2px;margin:0 4px 0 12px;vertical-align:-1px}}
-.tier{{display:grid;grid-template-columns:150px 1fr 44px;gap:12px;align-items:center;margin:8px 0}}
+.mark.budget{{border-color:#77746c;color:var(--muted)}}.mark.actual{{border-color:var(--good);color:var(--good);font-weight:600}}
+.legend{{font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.06em}}
+.legend i{{display:inline-block;width:8px;height:8px;border-radius:50%;background:#77746c;margin:0 4px 0 0}}
+.legend em{{display:inline-block;width:18px;height:8px;background:var(--band);margin:0 4px 0 12px;vertical-align:-1px}}
+.tier{{display:grid;grid-template-columns:150px 1fr 48px;gap:14px;align-items:center;margin:10px 0}}
 .tname small{{display:block;color:var(--muted);font-size:12px}}
-.tbar{{height:12px;background:#f0eee8;border-radius:6px;overflow:hidden}}.tbar div{{height:100%}}
-.tpct{{text-align:right;font-weight:600}}
+.tbar{{height:6px;background:#242424;overflow:hidden}}.tbar div{{height:100%}}
+.tpct{{text-align:right;font-weight:700}}
 .cols{{display:grid;grid-template-columns:1fr 1fr;gap:16px}}
-ul{{margin:0;padding-left:18px}}li{{margin:5px 0}}
+ul{{margin:0;padding-left:18px}}li{{margin:6px 0;color:#d6d3cb}}
 .up h2{{color:var(--good)}}.down h2{{color:var(--bad)}}
 table{{width:100%;border-collapse:collapse;font-size:14px}}
-th{{text-align:left;font-size:12px;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:6px 4px}}
-td{{padding:8px 4px;border-bottom:1px solid #f1efea}}.num{{text-align:right}}
-.read{{margin:12px 0 0;color:#333}}
-ol{{margin:0;padding-left:20px}}ol li{{margin:7px 0}}
-.check{{border-radius:10px;padding:14px 16px;font-size:14px;margin-bottom:16px}}
-.check.ok{{background:#e8f2ec;color:#1f5a40}}.check.miss{{background:#f6e7e4;color:#7d2f24}}
-footer{{color:var(--muted);font-size:12px;margin-top:26px;line-height:1.5}}
-@media(max-width:640px){{.kpis,.cols{{grid-template-columns:1fr}}h1{{font-size:32px}}.tier{{grid-template-columns:110px 1fr 40px}}}}
-@media print{{body{{background:#fff}}.wrap{{padding:0}}}}
+th{{text-align:left;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:8px 4px}}
+td{{padding:10px 4px;border-bottom:1px solid #1d1d1d}}.num{{text-align:right;font-variant-numeric:tabular-nums}}
+.read{{margin:14px 0 0;color:#c9c6be}}
+ol{{margin:0;padding-left:20px}}ol li{{margin:8px 0}}
+.check{{padding:14px 16px;font-size:14px;margin-bottom:16px;border:1px solid}}
+.check.ok{{border-color:#2f5a44;color:var(--good);background:#0f1a14}}.check.miss{{border-color:#5a2f28;color:var(--bad);background:#1a110f}}
+footer{{color:#66635c;font-size:11px;margin-top:34px;line-height:1.6;border-top:1px solid var(--line);padding-top:16px}}
+@media(max-width:640px){{.kpis,.cols{{grid-template-columns:1fr}}h1{{font-size:44px}}.tier{{grid-template-columns:110px 1fr 40px}}}}
+@media print{{*{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}.wrap{{padding:24px}}}}
 </style></head><body><div class="wrap">
 
 <div class="eyebrow">Pre-release brief · Data team</div>
