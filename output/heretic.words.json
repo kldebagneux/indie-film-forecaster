@@ -1,0 +1,26 @@
+{
+  "headline": "Heretic is forecast at about $31M, roughly 3x its budget, with a very wide range of outcomes",
+  "bottom_line": "The most likely result is about $30.8M, or 3.1x its $10M budget, but the three outcomes (under 1x, 1-3x, over 3x) are almost equally likely, so plan for a wide spread rather than one number.",
+  "helping": [
+    "The lean $10M budget, below the typical $13M, lifts the forecast by about 18%.",
+    "Being a horror film lifts the forecast by about 11%.",
+    "Being a thriller lifts the forecast by about 10%."
+  ],
+  "holding_back": [
+    "Not being a sequel or franchise film lowers the forecast by about 24%, the biggest drag.",
+    "No earlier films by Scott Beck in the data lowers it by about 6%."
+  ],
+  "comparables_read": "Similar thrillers and horror films landed anywhere from 1.0x to 20.6x their budgets: Cuckoo (1.0x), Don't Let Go (1.1x) and A24's Men (1.7x) were modest, while Speak No Evil (5.2x) and The Invisible Man (20.6x) were far bigger, so the 3x forecast sits between two very different groups.",
+  "risks": [
+    "There is about a 34% chance Heretic lands below 1x its budget.",
+    "The 50% range runs from $14.1M to $61.1M, and the 80% range from $6.3M to $135.0M, based on forecast misses on 108 past films the system had not seen.",
+    "About a third of outcomes are a breakout above 3x, but a hit like The Invisible Man is the exception rather than the base case.",
+    "There are 93 other releases that week, and the director has no track record in the data to lean on."
+  ],
+  "actions": [
+    "Set internal expectations around the 50% range of $14M to $61M rather than the single $31M figure.",
+    "Build the campaign on the horror and thriller appeal, since there is no franchise name to carry it.",
+    "Use the low budget as a strength in planning, since even a moderate result would be a solid multiple of cost.",
+    "Track early audience response closely and be ready to shift spend if it points toward the high or low end."
+  ]
+}
