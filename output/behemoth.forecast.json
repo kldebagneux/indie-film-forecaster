@@ -1,0 +1,96 @@
+{
+  "film": "Behemoth!",
+  "studio": "Searchlight Pictures",
+  "release_date": "2026-12-02",
+  "budget": 36000000,
+  "genres": "Music|Drama",
+  "rating": "R",
+  "director": "Tony Gilroy",
+  "competing_releases_that_week": 48,
+  "forecast_most_likely": 41743401,
+  "forecast_multiple": 1.16,
+  "forecast_range_50pct": [
+    12761750,
+    73193706
+  ],
+  "forecast_range_80pct": [
+    6787184,
+    152379275
+  ],
+  "range_based_on": "forecast errors on 155 past films the model had not seen",
+  "trained_on_films": 205,
+  "tier_probabilities": {
+    "underperform (<1x budget)": 0.19,
+    "solid (1-3x)": 0.56,
+    "breakout (>3x)": 0.25
+  },
+  "main_drivers": [
+    {
+      "factor": "Budget of $36M (typical here: $14M)",
+      "effect": "lowers",
+      "multiplier": 0.68
+    },
+    {
+      "factor": "Not a sequel or franchise film",
+      "effect": "lowers",
+      "multiplier": 0.77
+    },
+    {
+      "factor": "It is not a horror film",
+      "effect": "lowers",
+      "multiplier": 0.9
+    },
+    {
+      "factor": "Runtime of 127 min (typical: 107 min)",
+      "effect": "raises",
+      "multiplier": 1.07
+    },
+    {
+      "factor": "It is not a thriller film",
+      "effect": "lowers",
+      "multiplier": 0.95
+    }
+  ],
+  "comparables": [
+    {
+      "title": "She Said",
+      "studio": "Annapurna Pictures",
+      "year": 2022,
+      "budget": 32000000,
+      "revenue": 13900000,
+      "multiple": 0.4
+    },
+    {
+      "title": "Lawless",
+      "studio": "Annapurna Pictures",
+      "year": 2012,
+      "budget": 26000000,
+      "revenue": 55404207,
+      "multiple": 2.1
+    },
+    {
+      "title": "Mary Queen of Scots",
+      "studio": "Focus Features",
+      "year": 2018,
+      "budget": 25000000,
+      "revenue": 46712809,
+      "multiple": 1.9
+    },
+    {
+      "title": "T\u00c1R",
+      "studio": "Focus Features",
+      "year": 2022,
+      "budget": 35000000,
+      "revenue": 29048571,
+      "multiple": 0.8
+    },
+    {
+      "title": "Her",
+      "studio": "Annapurna Pictures",
+      "year": 2013,
+      "budget": 23000000,
+      "revenue": 47351251,
+      "multiple": 2.1
+    }
+  ]
+}

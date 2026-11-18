@@ -1,0 +1,51 @@
+{
+  "films_in_data": 205,
+  "test_years": [
+    2019,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "test_films": 101,
+  "typical_error_times_off": {
+    "simple_rule_budget_x_usual_multiple": 2.51,
+    "linear_model_ridge": 2.22,
+    "gradient_boosting": 2.42
+  },
+  "outcome_accuracy": {
+    "always_guess_most_common": 0.34,
+    "gradient_boosting_classifier": 0.44
+  },
+  "range_coverage": {
+    "50pct_range_contained_actual": 0.44,
+    "80pct_range_contained_actual": 0.78
+  },
+  "per_year": {
+    "2019": {
+      "films": 18,
+      "typical_error": 2.25,
+      "in_50pct_range": 0.39
+    },
+    "2022": {
+      "films": 21,
+      "typical_error": 2.15,
+      "in_50pct_range": 0.43
+    },
+    "2023": {
+      "films": 15,
+      "typical_error": 1.97,
+      "in_50pct_range": 0.53
+    },
+    "2024": {
+      "films": 19,
+      "typical_error": 2.42,
+      "in_50pct_range": 0.32
+    },
+    "2025": {
+      "films": 28,
+      "typical_error": 2.33,
+      "in_50pct_range": 0.5
+    }
+  }
+}

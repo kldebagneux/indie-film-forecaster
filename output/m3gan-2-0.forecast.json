@@ -1,0 +1,97 @@
+{
+  "film": "M3GAN 2.0",
+  "studio": "Blumhouse",
+  "release_date": "2025-06-25",
+  "budget": 15000000,
+  "genres": "Action|Science Fiction|Thriller",
+  "rating": "PG-13",
+  "director": "Gerard Johnstone",
+  "competing_releases_that_week": 47,
+  "forecast_most_likely": 174118530,
+  "forecast_multiple": 11.61,
+  "forecast_range_50pct": [
+    67252547,
+    341576226
+  ],
+  "forecast_range_80pct": [
+    28366198,
+    743117860
+  ],
+  "range_based_on": "forecast errors on 127 past films the model had not seen",
+  "trained_on_films": 187,
+  "tier_probabilities": {
+    "underperform (<1x budget)": 0.0,
+    "solid (1-3x)": 0.04,
+    "breakout (>3x)": 0.96
+  },
+  "main_drivers": [
+    {
+      "factor": "Part of a franchise",
+      "effect": "raises",
+      "multiplier": 2.7
+    },
+    {
+      "factor": "Director's earlier films earned about 15.1x their budget",
+      "effect": "raises",
+      "multiplier": 1.29
+    },
+    {
+      "factor": "It is a thriller film",
+      "effect": "raises",
+      "multiplier": 1.07
+    },
+    {
+      "factor": "Director has earlier films in the data",
+      "effect": "raises",
+      "multiplier": 1.07
+    },
+    {
+      "factor": "Runtime of 120 min (typical: 106 min)",
+      "effect": "raises",
+      "multiplier": 1.07
+    }
+  ],
+  "comparables": [
+    {
+      "title": "Insidious: Chapter 3",
+      "studio": "Blumhouse",
+      "year": 2015,
+      "budget": 10000000,
+      "revenue": 120453155,
+      "multiple": 12.0
+    },
+    {
+      "title": "Insidious: The Red Door",
+      "studio": "Blumhouse",
+      "year": 2023,
+      "budget": 16000000,
+      "revenue": 189090647,
+      "multiple": 11.8
+    },
+    {
+      "title": "Insidious: The Last Key",
+      "studio": "Blumhouse",
+      "year": 2018,
+      "budget": 10000000,
+      "revenue": 172811971,
+      "multiple": 17.3
+    },
+    {
+      "title": "Five Nights at Freddy's",
+      "studio": "Blumhouse",
+      "year": 2023,
+      "budget": 20000000,
+      "revenue": 298267333,
+      "multiple": 14.9
+    },
+    {
+      "title": "Insidious: Chapter 2",
+      "studio": "Blumhouse",
+      "year": 2013,
+      "budget": 5000000,
+      "revenue": 161921515,
+      "multiple": 32.4
+    }
+  ],
+  "actual_revenue_for_checking": 39173710
+}

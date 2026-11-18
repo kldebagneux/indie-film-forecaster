@@ -1,0 +1,95 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Heretic – Pre-release brief</title>
+<style>
+:root{--ink:#f2f0ea;--muted:#8a877f;--line:#2a2a2a;--bg:#0b0b0b;--card:#121212;--accent:#f2f0ea;
+--good:#7fbf9a;--mid:#d8c37a;--bad:#d97a6a;--band:#3a3833;--band80:#211f1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);
+font:15px/1.55 "Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:56px 24px 72px}
+.eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:72px;line-height:.95;margin:14px 0 14px;letter-spacing:-.04em;font-weight:700;text-transform:uppercase;overflow-wrap:anywhere}
+.meta{color:var(--muted);font-size:13px;letter-spacing:.04em;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.headline{font-size:24px;margin:30px 0 8px;font-weight:600;letter-spacing:-.01em}
+.lede{color:#c9c6be;margin:0 0 30px;max-width:680px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:22px}
+.kpi{background:var(--bg);padding:20px}
+.kpi b{display:block;font-size:34px;letter-spacing:-.03em;font-weight:700}.kpi span{color:var(--muted);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+.card{background:var(--card);border:1px solid var(--line);padding:22px;margin-bottom:16px}
+h2{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;font-weight:600}
+.range{position:relative;height:74px;margin:30px 6px 6px}
+.axis{position:absolute;top:34px;left:0;right:0;height:1px;background:#3a3a3a}
+.band80{position:absolute;top:28px;height:14px;background:var(--band80)}
+.band{position:absolute;top:24px;height:22px;background:var(--band)}
+.midmark{position:absolute;top:18px;width:3px;height:34px;background:var(--accent);transform:translateX(-50%)}
+.midmark span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:700;font-size:13px}
+.dot{position:absolute;top:30px;width:9px;height:9px;border-radius:50%;background:#77746c;transform:translateX(-50%);border:2px solid var(--card)}
+.mark{position:absolute;top:14px;height:42px;border-left:1px dashed;transform:translateX(-1px)}
+.mark span{position:absolute;top:44px;left:0;transform:translateX(-50%);white-space:nowrap;font-size:12px}
+.mark.budget{border-color:#77746c;color:var(--muted)}.mark.actual{border-color:var(--good);color:var(--good);font-weight:600}
+.legend{font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.06em}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#77746c;margin:0 4px 0 0}
+.legend em{display:inline-block;width:18px;height:8px;background:var(--band);margin:0 4px 0 12px;vertical-align:-1px}
+.legend em.e80{background:var(--band80);border:1px solid #2e2c28}
+.tier{display:grid;grid-template-columns:150px 1fr 48px;gap:14px;align-items:center;margin:10px 0}
+.tname small{display:block;color:var(--muted);font-size:12px}
+.tbar{height:6px;background:#242424;overflow:hidden}.tbar div{height:100%}
+.tpct{text-align:right;font-weight:700}
+.drv{display:grid;grid-template-columns:1fr 70px;gap:12px;padding:8px 0;border-bottom:1px solid #1d1d1d;font-size:14px}
+.drv:last-child{border-bottom:0}.drv b{text-align:right;font-variant-numeric:tabular-nums}
+.drv .up{color:var(--good)}.drv .down{color:var(--bad)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+ul{margin:0;padding-left:18px}li{margin:6px 0;color:#d6d3cb}
+.up h2{color:var(--good)}.down h2{color:var(--bad)}
+.table{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:8px 4px}
+td{padding:10px 4px;border-bottom:1px solid #1d1d1d}.num{text-align:right;font-variant-numeric:tabular-nums}
+.read{margin:14px 0 0;color:#c9c6be}
+ol{margin:0;padding-left:20px}ol li{margin:8px 0}
+.check{padding:14px 16px;font-size:14px;margin-bottom:16px;border:1px solid}
+.check.ok{border-color:#2f5a44;color:var(--good);background:#0f1a14}.check.miss{border-color:#5a2f28;color:var(--bad);background:#1a110f}
+footer{color:#66635c;font-size:11px;margin-top:34px;line-height:1.6;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:640px){.kpis,.cols{grid-template-columns:1fr}h1{font-size:44px}.tier{grid-template-columns:110px 1fr 40px}}
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}.wrap{padding:24px}}
+</style></head><body><div class="wrap">
+
+<div class="eyebrow">Pre-release brief · Data team</div>
+<h1>Heretic</h1>
+<div class="meta">A24 · Release 2024-10-31 · Thriller, Horror · Rated R · $10M budget</div>
+
+<p class="lede" style="margin-top:30px">Numbers only: add an Anthropic API key to get the written read.</p>
+
+<div class="kpis">
+  <div class="kpi"><b>$31M</b><span>Most likely box office</span></div>
+  <div class="kpi"><b>3.1x</b><span>Budget multiple</span></div>
+  <div class="kpi"><b>$14M–$61M</b><span>Likely range (middle 50%)</span></div>
+</div>
+
+<div class="check ok"><b>Backtest:</b> this forecast used only films released before Heretic. It actually earned $52M (5.2x budget), inside the 50% range.</div>
+
+<div class="card"><h2>Where it could land</h2>
+  <div class="range"><div class="axis"></div>
+    <div class="band80" style="left:10.4%;width:81.9%"></div>
+    <div class="band" style="left:32.0%;width:39.2%"></div>
+    <div class="mark budget" style="left:22.9%"><span>Budget $10M</span></div><div class="dot" style="left:94.1%" title="The Invisible Man: $144M"></div><div class="dot" style="left:12.1%" title="Cuckoo: $7M"></div><div class="dot" style="left:25.8%" title="Men: $11M"></div><div class="dot" style="left:77.4%" title="Speak No Evil: $77M"></div><div class="dot" style="left:5.9%" title="Don&#x27;t Let Go: $5M"></div><div class="mark actual" style="left:66.8%"><span>Actual $52M</span></div>
+    <div class="midmark" style="left:52.9%"><span>$31M</span></div>
+  </div>
+  <div class="legend"><i></i>comparable films <em></em>50% range <em class="e80"></em>80% range ($6M–$135M) · log scale</div>
+</div>
+
+<div class="card"><h2>Chance of each outcome</h2><div class="tier"><span class="tname">Underperform<small>(&lt;1x budget)</small></span><div class="tbar"><div style="width:34%;background:var(--bad)"></div></div><span class="tpct">34%</span></div><div class="tier"><span class="tname">Solid<small>(1-3x)</small></span><div class="tbar"><div style="width:33%;background:var(--mid)"></div></div><span class="tpct">33%</span></div><div class="tier"><span class="tname">Breakout<small>(&gt;3x)</small></span><div class="tbar"><div style="width:33%;background:var(--good)"></div></div><span class="tpct">33%</span></div></div>
+
+<div class="card"><h2>What moves the forecast (vs a typical film)</h2><div class="drv"><span>Not a sequel or franchise film</span><b class="down">×0.76</b></div><div class="drv"><span>Budget of $10M (typical here: $13M)</span><b class="up">×1.18</b></div><div class="drv"><span>It is a horror film</span><b class="up">×1.11</b></div><div class="drv"><span>It is a thriller film</span><b class="up">×1.10</b></div><div class="drv"><span>No earlier films by this director in the data</span><b class="down">×0.94</b></div></div>
+
+
+
+<div class="card"><h2>Comparable films</h2>
+  <div class="table"><table><tr><th>Film</th><th>Studio</th><th>Year</th><th class="num">Budget</th><th class="num">Box office</th><th class="num">Multiple</th></tr><tr><td>The Invisible Man</td><td>Blumhouse</td><td>2020</td><td class="num">$7M</td><td class="num">$144M</td><td class="num">20.6x</td></tr><tr><td>Cuckoo</td><td>Neon</td><td>2024</td><td class="num">$7M</td><td class="num">$7M</td><td class="num">1.0x</td></tr><tr><td>Men</td><td>A24</td><td>2022</td><td class="num">$6M</td><td class="num">$11M</td><td class="num">1.7x</td></tr><tr><td>Speak No Evil</td><td>Blumhouse</td><td>2024</td><td class="num">$15M</td><td class="num">$77M</td><td class="num">5.2x</td></tr><tr><td>Don&#x27;t Let Go</td><td>Blumhouse</td><td>2019</td><td class="num">$5M</td><td class="num">$5M</td><td class="num">1.1x</td></tr></table></div>
+  
+</div>
+
+
+
+<footer>Forecast from a model trained on public data for 172 indie releases. Tested on 101 past releases it had not seen: typically off by about 2.2x, and the 50% range held the real result 44% of the time. Treat figures as odds, not promises.
+Box office is worldwide gross, not profit. Data: TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB.</footer>
+</div></body></html>

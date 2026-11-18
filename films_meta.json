@@ -1,0 +1,6 @@
+{
+  "pulled_on": "2026-11-12",
+  "films": 436,
+  "source": "TMDB API",
+  "note": "Written by hand for the existing films.csv; fetch_films.py writes this file automatically from now on."
+}

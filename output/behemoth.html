@@ -1,0 +1,95 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Behemoth! – Pre-release brief</title>
+<style>
+:root{--ink:#f2f0ea;--muted:#8a877f;--line:#2a2a2a;--bg:#0b0b0b;--card:#121212;--accent:#f2f0ea;
+--good:#7fbf9a;--mid:#d8c37a;--bad:#d97a6a;--band:#3a3833;--band80:#211f1c}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);
+font:15px/1.55 "Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:56px 24px 72px}
+.eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:72px;line-height:.95;margin:14px 0 14px;letter-spacing:-.04em;font-weight:700;text-transform:uppercase;overflow-wrap:anywhere}
+.meta{color:var(--muted);font-size:13px;letter-spacing:.04em;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.headline{font-size:24px;margin:30px 0 8px;font-weight:600;letter-spacing:-.01em}
+.lede{color:#c9c6be;margin:0 0 30px;max-width:680px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:22px}
+.kpi{background:var(--bg);padding:20px}
+.kpi b{display:block;font-size:34px;letter-spacing:-.03em;font-weight:700}.kpi span{color:var(--muted);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+.card{background:var(--card);border:1px solid var(--line);padding:22px;margin-bottom:16px}
+h2{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;font-weight:600}
+.range{position:relative;height:74px;margin:30px 6px 6px}
+.axis{position:absolute;top:34px;left:0;right:0;height:1px;background:#3a3a3a}
+.band80{position:absolute;top:28px;height:14px;background:var(--band80)}
+.band{position:absolute;top:24px;height:22px;background:var(--band)}
+.midmark{position:absolute;top:18px;width:3px;height:34px;background:var(--accent);transform:translateX(-50%)}
+.midmark span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:700;font-size:13px}
+.dot{position:absolute;top:30px;width:9px;height:9px;border-radius:50%;background:#77746c;transform:translateX(-50%);border:2px solid var(--card)}
+.mark{position:absolute;top:14px;height:42px;border-left:1px dashed;transform:translateX(-1px)}
+.mark span{position:absolute;top:44px;left:0;transform:translateX(-50%);white-space:nowrap;font-size:12px}
+.mark.budget{border-color:#77746c;color:var(--muted)}.mark.actual{border-color:var(--good);color:var(--good);font-weight:600}
+.legend{font-size:11px;color:var(--muted);margin-top:10px;letter-spacing:.06em}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#77746c;margin:0 4px 0 0}
+.legend em{display:inline-block;width:18px;height:8px;background:var(--band);margin:0 4px 0 12px;vertical-align:-1px}
+.legend em.e80{background:var(--band80);border:1px solid #2e2c28}
+.tier{display:grid;grid-template-columns:150px 1fr 48px;gap:14px;align-items:center;margin:10px 0}
+.tname small{display:block;color:var(--muted);font-size:12px}
+.tbar{height:6px;background:#242424;overflow:hidden}.tbar div{height:100%}
+.tpct{text-align:right;font-weight:700}
+.drv{display:grid;grid-template-columns:1fr 70px;gap:12px;padding:8px 0;border-bottom:1px solid #1d1d1d;font-size:14px}
+.drv:last-child{border-bottom:0}.drv b{text-align:right;font-variant-numeric:tabular-nums}
+.drv .up{color:var(--good)}.drv .down{color:var(--bad)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+ul{margin:0;padding-left:18px}li{margin:6px 0;color:#d6d3cb}
+.up h2{color:var(--good)}.down h2{color:var(--bad)}
+.table{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);padding:8px 4px}
+td{padding:10px 4px;border-bottom:1px solid #1d1d1d}.num{text-align:right;font-variant-numeric:tabular-nums}
+.read{margin:14px 0 0;color:#c9c6be}
+ol{margin:0;padding-left:20px}ol li{margin:8px 0}
+.check{padding:14px 16px;font-size:14px;margin-bottom:16px;border:1px solid}
+.check.ok{border-color:#2f5a44;color:var(--good);background:#0f1a14}.check.miss{border-color:#5a2f28;color:var(--bad);background:#1a110f}
+footer{color:#66635c;font-size:11px;margin-top:34px;line-height:1.6;border-top:1px solid var(--line);padding-top:16px}
+@media(max-width:640px){.kpis,.cols{grid-template-columns:1fr}h1{font-size:44px}.tier{grid-template-columns:110px 1fr 40px}}
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}.wrap{padding:24px}}
+</style></head><body><div class="wrap">
+
+<div class="eyebrow">Pre-release brief · Data team</div>
+<h1>Behemoth!</h1>
+<div class="meta">Searchlight Pictures · Release 2026-12-02 · Music, Drama · Rated R · $36M budget</div>
+
+<p class="lede" style="margin-top:30px">Numbers only: add an Anthropic API key to get the written read.</p>
+
+<div class="kpis">
+  <div class="kpi"><b>$42M</b><span>Most likely box office</span></div>
+  <div class="kpi"><b>1.2x</b><span>Budget multiple</span></div>
+  <div class="kpi"><b>$13M–$73M</b><span>Likely range (middle 50%)</span></div>
+</div>
+
+
+
+<div class="card"><h2>Where it could land</h2>
+  <div class="range"><div class="axis"></div>
+    <div class="band80" style="left:6.3%;width:87.5%"></div>
+    <div class="band" style="left:24.0%;width:49.1%"></div>
+    <div class="mark budget" style="left:53.2%"><span>Budget $36M</span></div><div class="dot" style="left:26.4%" title="She Said: $14M"></div><div class="dot" style="left:65.3%" title="Lawless: $55M"></div><div class="dot" style="left:60.5%" title="Mary Queen of Scots: $47M"></div><div class="dot" style="left:47.1%" title="TÁR: $29M"></div><div class="dot" style="left:60.9%" title="Her: $47M"></div>
+    <div class="midmark" style="left:57.3%"><span>$42M</span></div>
+  </div>
+  <div class="legend"><i></i>comparable films <em></em>50% range <em class="e80"></em>80% range ($7M–$152M) · log scale</div>
+</div>
+
+<div class="card"><h2>Chance of each outcome</h2><div class="tier"><span class="tname">Underperform<small>(&lt;1x budget)</small></span><div class="tbar"><div style="width:19%;background:var(--bad)"></div></div><span class="tpct">19%</span></div><div class="tier"><span class="tname">Solid<small>(1-3x)</small></span><div class="tbar"><div style="width:56%;background:var(--mid)"></div></div><span class="tpct">56%</span></div><div class="tier"><span class="tname">Breakout<small>(&gt;3x)</small></span><div class="tbar"><div style="width:25%;background:var(--good)"></div></div><span class="tpct">25%</span></div></div>
+
+<div class="card"><h2>What moves the forecast (vs a typical film)</h2><div class="drv"><span>Budget of $36M (typical here: $14M)</span><b class="down">×0.68</b></div><div class="drv"><span>Not a sequel or franchise film</span><b class="down">×0.77</b></div><div class="drv"><span>It is not a horror film</span><b class="down">×0.90</b></div><div class="drv"><span>Runtime of 127 min (typical: 107 min)</span><b class="up">×1.07</b></div><div class="drv"><span>It is not a thriller film</span><b class="down">×0.95</b></div></div>
+
+
+
+<div class="card"><h2>Comparable films</h2>
+  <div class="table"><table><tr><th>Film</th><th>Studio</th><th>Year</th><th class="num">Budget</th><th class="num">Box office</th><th class="num">Multiple</th></tr><tr><td>She Said</td><td>Annapurna Pictures</td><td>2022</td><td class="num">$32M</td><td class="num">$14M</td><td class="num">0.4x</td></tr><tr><td>Lawless</td><td>Annapurna Pictures</td><td>2012</td><td class="num">$26M</td><td class="num">$55M</td><td class="num">2.1x</td></tr><tr><td>Mary Queen of Scots</td><td>Focus Features</td><td>2018</td><td class="num">$25M</td><td class="num">$47M</td><td class="num">1.9x</td></tr><tr><td>TÁR</td><td>Focus Features</td><td>2022</td><td class="num">$35M</td><td class="num">$29M</td><td class="num">0.8x</td></tr><tr><td>Her</td><td>Annapurna Pictures</td><td>2013</td><td class="num">$23M</td><td class="num">$47M</td><td class="num">2.1x</td></tr></table></div>
+  
+</div>
+
+
+
+<footer>Forecast from a model trained on public data for 205 indie releases. Tested on 101 past releases it had not seen: typically off by about 2.2x, and the 50% range held the real result 44% of the time. Treat figures as odds, not promises.
+Box office is worldwide gross, not profit. Data: TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB.</footer>
+</div></body></html>

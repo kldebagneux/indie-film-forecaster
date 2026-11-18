@@ -1,0 +1,97 @@
+{
+  "film": "Heretic",
+  "studio": "A24",
+  "release_date": "2024-10-31",
+  "budget": 10000000,
+  "genres": "Thriller|Horror",
+  "rating": "R",
+  "director": "Scott Beck",
+  "competing_releases_that_week": 93,
+  "forecast_most_likely": 30838690,
+  "forecast_multiple": 3.08,
+  "forecast_range_50pct": [
+    14073814,
+    61144535
+  ],
+  "forecast_range_80pct": [
+    6260644,
+    134989488
+  ],
+  "range_based_on": "forecast errors on 108 past films the model had not seen",
+  "trained_on_films": 172,
+  "tier_probabilities": {
+    "underperform (<1x budget)": 0.34,
+    "solid (1-3x)": 0.33,
+    "breakout (>3x)": 0.33
+  },
+  "main_drivers": [
+    {
+      "factor": "Not a sequel or franchise film",
+      "effect": "lowers",
+      "multiplier": 0.76
+    },
+    {
+      "factor": "Budget of $10M (typical here: $13M)",
+      "effect": "raises",
+      "multiplier": 1.18
+    },
+    {
+      "factor": "It is a horror film",
+      "effect": "raises",
+      "multiplier": 1.11
+    },
+    {
+      "factor": "It is a thriller film",
+      "effect": "raises",
+      "multiplier": 1.1
+    },
+    {
+      "factor": "No earlier films by this director in the data",
+      "effect": "lowers",
+      "multiplier": 0.94
+    }
+  ],
+  "comparables": [
+    {
+      "title": "The Invisible Man",
+      "studio": "Blumhouse",
+      "year": 2020,
+      "budget": 7000000,
+      "revenue": 144492724,
+      "multiple": 20.6
+    },
+    {
+      "title": "Cuckoo",
+      "studio": "Neon",
+      "year": 2024,
+      "budget": 7000000,
+      "revenue": 6680396,
+      "multiple": 1.0
+    },
+    {
+      "title": "Men",
+      "studio": "A24",
+      "year": 2022,
+      "budget": 6500000,
+      "revenue": 11152071,
+      "multiple": 1.7
+    },
+    {
+      "title": "Speak No Evil",
+      "studio": "Blumhouse",
+      "year": 2024,
+      "budget": 15000000,
+      "revenue": 77471907,
+      "multiple": 5.2
+    },
+    {
+      "title": "Don't Let Go",
+      "studio": "Blumhouse",
+      "year": 2019,
+      "budget": 5000000,
+      "revenue": 5300000,
+      "multiple": 1.1
+    }
+  ],
+  "actual_revenue_for_checking": 51913394
+}

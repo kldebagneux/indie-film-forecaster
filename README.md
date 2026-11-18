@@ -1,72 +1,116 @@
 # Indie film box office forecaster
 
-A small project to see how far you can get forecasting a film's box office with public data, and then have an AI agent turn the forecast into something a marketing team could actually read.
+How far can you get forecasting an indie film's box office with only public data? And can an AI agent turn that forecast into something a marketing team would actually read?
 
-## What it does
+You give it a film's details before release: budget, genre, rating, release date, director and so on. It gives you:
 
-You give it a film's details before release (budget, genre, rating, release date, director, and so on). It gives you a likely box office number, a range, the odds of the film underperforming, doing fine or breaking out, and the five most similar past films. Then Claude writes a one page brief from that, in plain English.
+- a likely box office number
+- a range that has been checked against reality
+- the odds of underperforming, doing fine or breaking out
+- what is pushing the forecast up or down
+- the five most similar past films
 
-There are three scripts:
+Then Claude writes a one-page brief from that, in plain English.
 
-1. `fetch_films.py` pulls about 430 films from 2012 to 2026 from TMDB, from A24 and studios that make similar films: Neon, Focus Features, Searchlight, Annapurna, Bleecker Street and Blumhouse.
-2. `model.py` cleans the data and makes the forecast. It predicts how many times its budget a film will earn, using only things you'd know before release.
-3. `brief.py` sends the forecast to Claude and builds a one page report (`brief.html`). Claude only writes the text. All the numbers and charts come from Python, so it can't get a figure wrong.
+![Every 2025 film: forecast range vs what it actually earned](results/backtest_2025.png)
 
-## The model
+*Every 2025 release in the data, forecast using only films released before 2025. The bars are the 50% and 80% ranges, the black tick is the forecast and the dot is what the film actually earned.*
 
-I used three simple models, each for one job:
+## Results
 
-- A linear model (ridge regression) for the main number and the range
-- A gradient boosting classifier for the odds of each outcome
-- Nearest neighbours to find the five closest past films
-
-To test it fairly, I went year by year from 2019 to 2025. Each year, the model only learned from films released before that year.
+I tested it the way it would actually be used. For each year from 2019 to 2025, the model learned only from films released before that year, then forecast that year's films. That gives 101 test films it had never seen. I left 2020 and 2021 out as test years because theaters were closed or half empty, but those films are still used for training.
 
 | Method | Typical error |
 |---|---|
 | Simple rule (budget times the usual multiple) | 2.51x |
-| Linear model | 2.20x |
-| Gradient boosting | 2.47x |
+| Linear model | **2.22x** |
+| Gradient boosting | 2.42x |
 
-So the model beats the rule of thumb, but not by a huge margin. The outcome classifier was right 45% of the time, against 34% if you just always guess the most common outcome.
+The outcome classifier (underperform / solid / breakout) was right 44% of the time, against 34% if you always guess the most common outcome.
 
-Two examples:
+**Are the ranges honest?** The range comes from how far off the forecasts were on films the model hadn't seen, not from how well it fits its own training data. Tested the same way:
 
-- **Heretic (A24, 2024).** Using only films released before it, the model said about $27M, probably between $13M and $58M. It made $52M.
-- **Behemoth! (Searchlight, December 2026).** Not out yet. The model says about $35M, probably between $17M and $73M, with a 62% chance of a solid result. We'll see.
+- the **50% range** contained the real result for **44%** of films
+- the **80% range** contained it for **78%**
+
+So when it says "probably between $14M and $61M", that's roughly what it means.
+
+**Where it goes wrong:** almost all the big misses are tiny releases that made under $5M, like *Highest 2 Lowest* (mostly streaming) or *Anemone*. Excluding those, the 50% range held 52% of the time. The public data can't tell a wide release from a small one before it opens, and that's exactly what a studio's own release plan would fix (see below).
+
+### Three examples
+
+- **Heretic (A24, 2024).** Using only earlier films: about $31M, probably $14M–$61M. It made $52M, inside the range.
+- **M3GAN 2.0 (Blumhouse, 2025), a miss.** It forecast about $174M, probably $67M–$342M, because sequels to breakouts usually do well. It made $39M. Franchise fatigue isn't in public data.
+- **Behemoth! (Searchlight, December 2026).** Not out yet. About $42M, probably $13M–$73M, with a 56% chance of a solid result (1–3x its budget). We'll see.
+
+The briefs for all three are in [`output/`](output).
+
+## How it works
+
+```
+fetch_films.py  →  films.csv  →  forecaster.py  →  predict.py / app.py  →  brief.py
+   (TMDB)                       (features, models,       (one film)         (Claude writes
+                                 honest ranges)                              the words)
+```
+
+1. **`fetch_films.py`** pulls about 435 films from 2012 to 2026 from TMDB. They come from A24 and studios that make similar films: Neon, Focus Features, Searchlight, Annapurna, Bleecker Street and Blumhouse. Responses are cached, and `films_meta.json` records when the data was pulled.
+2. **`forecaster.py`** cleans the data and makes the forecast. It predicts how many times its budget a film will earn, using only things you'd know before release:
+   - budget, in 2025 dollars
+   - genre, rating, sequel or not, runtime and release month
+   - how many films open the same week
+   - the director's track record, from their earlier films only
+3. **`evaluate.py`** runs the year-by-year test above and draws the chart.
+4. **`brief.py`** sends the forecast to Claude and builds the one-page brief. Claude only writes the text, and its answer must match a fixed structure. Every number and chart comes from Python, so it can't get a figure wrong. For past films, the real result is hidden from Claude, so the brief is written blind.
+5. **`app.py`** is a simple form, so anyone can get a forecast without touching code.
+
+Three models, each for one job:
+
+- A linear model (ridge regression) for the main number
+- A gradient boosting classifier for the odds of each outcome
+- Nearest neighbours for the five closest past films (matched on budget, genre, rating and sequel status)
 
 ## Things I tried that didn't work
 
-- Star power, meaning the past box office of the top three actors. It made no difference, and it wasn't significant (p = 0.45).
-- Keywords like "supernatural horror" or "based on a true story". They looked significant on past films (p = 0.046) but made forecasts on new films worse. Classic overfitting, so I dropped them.
-- Removing the weaker features. Most weren't significant on their own, but taking them out made forecasts worse, so I kept them.
-- Gradient boosting for the main number. With only about 200 films, the simpler model held up better.
+- **Star power**, meaning the past box office of the top three actors. It made no difference, and it wasn't significant (p = 0.45).
+- **Keywords** like "supernatural horror" or "based on a true story". They looked significant on past films (p = 0.046) but made forecasts on new films worse. Classic overfitting, so I dropped them.
+- **Release season** (awards season, summer) instead of month. It was slightly worse in the test (2.28x vs 2.22x).
+- **Removing the weaker features.** Most weren't significant on their own, but taking them out made forecasts worse.
+- **Gradient boosting for the main number.** With about 200 films, the simpler model held up better.
+
+One honest correction: an earlier version scored 2.20x, but it filled in missing director records with an average that included later films. That's a small leak of the future. Fixing it properly cost a little accuracy, and measuring the director's record as a multiple of budget won most of it back.
 
 ## Limits
 
 - It's still usually off by around 2x. Public data just doesn't capture what makes a film take off.
 - Box office isn't profit. Theaters keep a big share, and marketing costs aren't included.
-- TMDB lists production companies, so some films a studio only distributed are missing.
+- TMDB lists production companies, so some films a studio only distributed are missing. TMDB budgets are often rough estimates, and revenue is worldwide.
 - I left out films that made under $1M, since most of those went straight to streaming.
+- The 2025 consumer price figure is approximate, and 2026 is a projection.
 
 ## What a studio's own data would add
 
 This is where most of the accuracy would come from:
 
+- **Release plan.** Screen count and release pattern (limited or wide). This would catch most of the big misses above.
 - **Presales.** Tickets sold a couple of weeks before release, compared with similar films at the same point.
-- **Trailers and clips.** Views in the first week after each trailer or clip drops, how fast that grows, and how people react in the comments. It would have to be measured before release, otherwise the model is just learning which films ended up being hits.
+- **Trailers and clips.** Views in the first week after each trailer or clip drops, how fast that grows, and how people react in the comments. It would have to be measured before release, otherwise the model just learns which films ended up being hits.
 - **Social media.** Follower growth, mentions and engagement in the weeks before release, on TikTok, Instagram, X and Letterboxd.
 - **Screenwriter track record**, the same way I did it for directors. I'd keep the scripts themselves out of it. The point is to plan the release, not to judge the creative work.
 
-The next step would be a simple form on top of it, so someone could get a forecast without touching any code.
-
 ## Running it
 
-    pip3 install requests pandas scikit-learn anthropic
-    export TMDB_API_KEY="your key"
-    export ANTHROPIC_API_KEY="your key"
-    python3 fetch_films.py
-    python3 model.py     # change NEW_FILM at the bottom to forecast another film
-    python3 brief.py
+```bash
+pip3 install -r requirements.txt
+export TMDB_API_KEY="your key"         # free at themoviedb.org
+export ANTHROPIC_API_KEY="your key"    # optional: without it you get a numbers-only brief
+
+python3 fetch_films.py                          # download the data (cached after the first run)
+python3 evaluate.py                             # year-by-year test + chart in results/
+python3 predict.py films/behemoth.json          # forecast a new film (copy the file for another film)
+python3 predict.py --backtest "Heretic"         # or check it on a past film
+python3 brief.py output/behemoth.forecast.json  # build the one-page brief
+streamlit run app.py                            # or do all of it from a form
+python3 -m pytest                               # tests, including one that proves backtests can't see the future
+```
 
 *This product uses the TMDB API but is not endorsed or certified by TMDB.*
