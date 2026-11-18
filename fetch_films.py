@@ -66,12 +66,11 @@ def competitors(release_date):
     return max(data["total_results"] - 1, 0)
 
 
-def main():
+def fetch(refresh=False):
+    """Download everything and write films.csv + films_meta.json. Also used by the online app."""
     global REFRESH
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--refresh", action="store_true", help="ignore cached responses")
-    REFRESH = p.parse_args().refresh
-    if "TMDB_API_KEY" not in os.environ:
+    REFRESH = refresh
+    if not os.environ.get("TMDB_API_KEY"):
         raise SystemExit("Set TMDB_API_KEY first (free at themoviedb.org/settings/api).")
     CACHE.mkdir(parents=True, exist_ok=True)
 
@@ -114,6 +113,12 @@ def main():
         {"pulled_on": str(date.today()), "films": len(df), "with_budget_and_revenue": len(usable),
          "source": "TMDB API", "studios": STUDIOS}, indent=2))
     print(f"Total films: {len(df)}, usable: {len(usable)}")
+
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--refresh", action="store_true", help="ignore cached responses")
+    fetch(p.parse_args().refresh)
 
 
 if __name__ == "__main__":

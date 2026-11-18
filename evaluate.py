@@ -35,6 +35,8 @@ def add_ranges(bt):
         rows = bt.year == y
         for col, off in [("lo50", lo50), ("hi50", hi50), ("lo80", lo80), ("hi80", hi80)]:
             bt.loc[rows, col] = bt.loc[rows, "pred"] + off
+        odds = np.array([list(fc.tier_probabilities(pr, earlier).values()) for pr in bt.loc[rows, "pred"]])
+        bt.loc[rows, ["err_p0", "err_p1", "err_p2"]] = odds
     bt["in50"] = (bt.log_multiple >= bt.lo50) & (bt.log_multiple <= bt.hi50)
     bt["in80"] = (bt.log_multiple >= bt.lo80) & (bt.log_multiple <= bt.hi80)
     return bt
@@ -84,6 +86,12 @@ def chart(year_rows, path, year):
     plt.close(fig)
 
 
+def brier(rows, prefix):
+    """Brier score for the outcome odds: 0 is perfect, about 0.67 is knowing nothing."""
+    p = rows[[f"{prefix}_p0", f"{prefix}_p1", f"{prefix}_p2"]].values
+    return float(np.mean(((p - np.eye(3)[rows.tier.values]) ** 2).sum(1)))
+
+
 def main():
     df = fc.load_films()
     bt = add_ranges(fc.rolling_backtest(df))
@@ -102,9 +110,15 @@ def main():
             "linear_model_ridge": round(avg(lambda g: typical_error(g.log_multiple, g.pred)), 2),
             "gradient_boosting": round(avg(lambda g: typical_error(g.log_multiple, g.pred_gb)), 2),
         },
-        "outcome_accuracy": {
+        "outcome_odds_score_brier_lower_is_better": {
+            "base_rates_only": round(brier(head, "base"), 3),
+            "separate_classifier_old": round(brier(head, "clf"), 3),
+            "from_tested_error_spread": round(brier(head, "err"), 3),
+        },
+        "outcome_most_likely_correct": {
             "always_guess_most_common": round(avg(lambda g: np.mean(g.tier == g.base_tier)), 2),
-            "gradient_boosting_classifier": round(avg(lambda g: np.mean(g.tier == g.pred_tier)), 2),
+            "separate_classifier_old": round(avg(lambda g: np.mean(g.tier == g.pred_tier)), 2),
+            "from_tested_error_spread": round(avg(lambda g: np.mean(g.tier == g[["err_p0", "err_p1", "err_p2"]].values.argmax(1))), 2),
         },
         "range_coverage": {
             "50pct_range_contained_actual": round(float(head.in50.mean()), 2),
@@ -134,10 +148,11 @@ def main():
     print(f"  Simple rule (budget x usual multiple): x{e['simple_rule_budget_x_usual_multiple']:.2f}")
     print(f"  Linear model (ridge):                  x{e['linear_model_ridge']:.2f}")
     print(f"  Gradient boosting:                     x{e['gradient_boosting']:.2f}")
-    o = metrics["outcome_accuracy"]
-    print("Outcome prediction (accuracy, higher is better):")
-    print(f"  Always guess the most common outcome:  {o['always_guess_most_common']:.0%}")
-    print(f"  Gradient boosting classifier:          {o['gradient_boosting_classifier']:.0%}")
+    o = metrics["outcome_odds_score_brier_lower_is_better"]
+    print("Outcome odds (Brier score, lower is better):")
+    print(f"  Base rates only:                       {o['base_rates_only']:.3f}")
+    print(f"  Separate classifier (old):             {o['separate_classifier_old']:.3f}")
+    print(f"  From the tested error spread (used):   {o['from_tested_error_spread']:.3f}")
     print("Are the ranges honest?")
     print(f"  50% range contained the actual result: {c['50pct_range_contained_actual']:.0%} of films")
     print(f"  80% range contained the actual result: {c['80pct_range_contained_actual']:.0%} of films")

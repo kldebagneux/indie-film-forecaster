@@ -29,6 +29,9 @@ Rules:
   Never call outcomes "simulated".
 - "main_drivers" compares this film with a typical film in the data: "multiplier" is how much
   that factor moves the forecast (0.8 = about 20% lower). Use them for "helping" and "holding_back".
+- "forecast_central" is the single best estimate. The odds and ranges are built from past
+  misses, which were more often too high than too low (especially for small releases), so the
+  odds can lean lower than the central forecast. If they do, say so plainly.
 - Be honest about uncertainty, but be useful: marketing needs a clear read.
 - Keep every list item to one short sentence. 2-4 items per list."""
 
@@ -120,7 +123,7 @@ def render_html(forecast, words=None):
     """Build the one-page brief. Without words (no API key), the text sections are left out."""
     e, money = html.escape, fc.money
     actual = forecast.get("actual_revenue_for_checking")
-    budget, mid = forecast["budget"], forecast["forecast_most_likely"]
+    budget, mid = forecast["budget"], forecast["forecast_central"]
     low, high = forecast["forecast_range_50pct"]
     low80, high80 = forecast["forecast_range_80pct"]
     comps = forecast["comparables"]
@@ -197,7 +200,7 @@ def render_html(forecast, words=None):
 {intro}
 
 <div class="kpis">
-  <div class="kpi"><b>{money(mid)}</b><span>Most likely box office</span></div>
+  <div class="kpi"><b>{money(mid)}</b><span>Central forecast</span></div>
   <div class="kpi"><b>{mid / budget:.1f}x</b><span>Budget multiple</span></div>
   <div class="kpi"><b>{money(low)}–{money(high)}</b><span>Likely range (middle 50%)</span></div>
 </div>

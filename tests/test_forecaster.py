@@ -33,7 +33,7 @@ def test_backtest_does_not_see_the_future(df, df_future_changed):
     """A backtest forecast must not change when later films' results change."""
     a = fc.forecast_existing(df, FILM)
     b = fc.forecast_existing(df_future_changed, FILM)
-    for key in ["forecast_most_likely", "forecast_range_50pct", "forecast_range_80pct",
+    for key in ["forecast_central", "forecast_range_50pct", "forecast_range_80pct",
                 "tier_probabilities", "main_drivers", "comparables"]:
         assert a[key] == b[key], key
 
@@ -58,7 +58,7 @@ def test_new_film_forecast_is_ordered(df):
                              "director": "Nobody", "is_sequel": False, "competitors": None})
     lo80, hi80 = r["forecast_range_80pct"]
     lo50, hi50 = r["forecast_range_50pct"]
-    assert lo80 < lo50 < r["forecast_most_likely"] < hi50 < hi80
+    assert lo80 < lo50 < r["forecast_central"] < hi50 < hi80
     assert abs(sum(r["tier_probabilities"].values()) - 1) < 0.02
     assert len(r["comparables"]) == 5
 

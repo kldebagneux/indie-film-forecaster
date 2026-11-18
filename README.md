@@ -26,7 +26,7 @@ I tested it the way it would actually be used. For each year from 2019 to 2025, 
 | Linear model | **2.22x** |
 | Gradient boosting | 2.42x |
 
-The outcome classifier (underperform / solid / breakout) was right 44% of the time, against 34% if you always guess the most common outcome.
+**Are the odds honest?** The odds of each outcome (under 1x, 1–3x, over 3x budget) come from the same past misses as the range. I first used a separate classifier for this. It picked the right outcome 44% of the time, but its probabilities were no better than quoting base rates (Brier score 0.712 vs 0.710, lower is better), and when it said "80%+ likely" it was right only 58% of the time. Building the odds from the tested error spread scores 0.645, and keeps the odds consistent with the range.
 
 **Are the ranges honest?** The range comes from how far off the forecasts were on films the model hadn't seen, not from how well it fits its own training data. Tested the same way:
 
@@ -41,7 +41,9 @@ So when it says "probably between $14M and $61M", that's roughly what it means.
 
 - **Heretic (A24, 2024).** Using only earlier films: about $31M, probably $14M–$61M. It made $52M, inside the range.
 - **M3GAN 2.0 (Blumhouse, 2025), a miss.** It forecast about $174M, probably $67M–$342M, because sequels to breakouts usually do well. It made $39M. Franchise fatigue isn't in public data.
-- **Behemoth! (Searchlight, December 2026).** Not out yet. About $42M, probably $13M–$73M, with a 56% chance of a solid result (1–3x its budget). We'll see.
+- **Behemoth! (Searchlight, December 2026).** Not out yet. Central forecast about $42M, probably $13M–$73M. The odds lean lower than that number (56% chance of earning under its $36M budget), because past forecasts were more often too high than too low. We'll see.
+
+I tested shifting the central forecast down to correct for that lean. It made the forecasts less accurate (2.39x vs 2.22x), because the lean comes mostly from a few tiny releases, so the single number stays as it is and the odds carry the caution.
 
 The briefs for all three are in [`output/`](output).
 
@@ -63,10 +65,9 @@ fetch_films.py  →  films.csv  →  forecaster.py  →  predict.py / app.py  �
 4. **`brief.py`** sends the forecast to Claude and builds the one-page brief. Claude only writes the text, and its answer must match a fixed structure. Every number and chart comes from Python, so it can't get a figure wrong. For past films, the real result is hidden from Claude, so the brief is written blind.
 5. **`app.py`** is a simple form, so anyone can get a forecast without touching code.
 
-Three models, each for one job:
+Two models, each for one job:
 
-- A linear model (ridge regression) for the main number
-- A gradient boosting classifier for the odds of each outcome
+- A linear model (ridge regression) for the central forecast. The ranges and the odds come from its tested past errors.
 - Nearest neighbours for the five closest past films (matched on budget, genre, rating and sequel status)
 
 ## Things I tried that didn't work
@@ -76,6 +77,7 @@ Three models, each for one job:
 - **Release season** (awards season, summer) instead of month. It was slightly worse in the test (2.28x vs 2.22x).
 - **Removing the weaker features.** Most weren't significant on their own, but taking them out made forecasts worse.
 - **Gradient boosting for the main number.** With about 200 films, the simpler model held up better.
+- **A separate classifier for the odds.** Its probabilities were no better than base rates, so the odds now come from the tested error spread (see Results).
 
 One honest correction: an earlier version scored 2.20x, but it filled in missing director records with an average that included later films. That's a small leak of the future. Fixing it properly cost a little accuracy, and measuring the director's record as a multiple of budget won most of it back.
 
@@ -96,6 +98,10 @@ This is where most of the accuracy would come from:
 - **Trailers and clips.** Views in the first week after each trailer or clip drops, how fast that grows, and how people react in the comments. It would have to be measured before release, otherwise the model just learns which films ended up being hits.
 - **Social media.** Follower growth, mentions and engagement in the weeks before release, on TikTok, Instagram, X and Letterboxd.
 - **Screenwriter track record**, the same way I did it for directors. I'd keep the scripts themselves out of it. The point is to plan the release, not to judge the creative work.
+
+## The online app
+
+The app runs privately on Streamlit Community Cloud. It has the same form, no install needed, and only invited people can open it. Online, the keys live in the app's private "Secrets" settings, never in the code. On its first start the app downloads the film data from TMDB itself, so the data file never needs to be shared. Claude briefs are capped per day (`BRIEFS_PER_DAY`, default 30), and an optional `APP_PASSWORD` adds a second lock. See the top of `app.py` for the settings.
 
 ## Running it
 

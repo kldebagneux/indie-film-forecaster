@@ -124,6 +124,8 @@ def rolling_backtest(df, with_extras=True):
             rows["pred_gb"] = m["gb"].predict(test[FEATURES])
             rows["pred_base"] = np.log(np.median(train.multiple))
             rows["pred_tier"] = m["tiers"].predict(test[FEATURES])
+            rows[["clf_p0", "clf_p1", "clf_p2"]] = m["tiers"].predict_proba(test[FEATURES])
+            rows[["base_p0", "base_p1", "base_p2"]] = np.bincount(train.tier, minlength=3) / len(train)
             rows["base_tier"] = train.tier.mode()[0]
         out.append(rows)
     bt = pd.concat(out, ignore_index=True)
@@ -135,6 +137,19 @@ def ranges_from_errors(errors):
     """Middle-50% and middle-80% ranges (as log-multiple offsets) from past forecast errors."""
     p10, p25, p75, p90 = np.percentile(errors, [10, 25, 75, 90])
     return (p25, p75), (p10, p90)
+
+
+def tier_probabilities(pred, errors):
+    """Odds of each outcome, from the same tested error spread as the range.
+
+    Each past forecast error is applied to this forecast; the share of results that
+    land under 1x, between 1x and 3x, and over 3x budget gives the odds. This keeps
+    the odds consistent with the range (a separate classifier scored no better
+    than quoting base rates, see evaluate.py).
+    """
+    outcomes = pred + np.asarray(errors)
+    under, over = np.mean(outcomes < np.log(1)), np.mean(outcomes >= np.log(3))
+    return dict(zip(TIERS, np.round([under, 1 - under - over, over], 2).tolist()))
 
 
 def _describe(feature, value, film, past):
@@ -171,7 +186,6 @@ def forecast(film, past, errors, actual=None):
     """
     m = make_models()
     m["ridge"].fit(past[FEATURES], past.log_multiple)
-    m["tiers"].fit(past[FEATURES], past.tier)
 
     pred = m["ridge"].predict(film[FEATURES])[0]
     budget = float(film.budget.iloc[0])
@@ -204,13 +218,13 @@ def forecast(film, past, errors, actual=None):
         "rating": film.rating.iloc[0],
         "director": film.director.iloc[0],
         "competing_releases_that_week": int(film.competitors.iloc[0]),
-        "forecast_most_likely": round(budget * np.exp(pred)),
+        "forecast_central": round(budget * np.exp(pred)),
         "forecast_multiple": round(float(np.exp(pred)), 2),
         "forecast_range_50pct": [round(budget * np.exp(pred + lo50)), round(budget * np.exp(pred + hi50))],
         "forecast_range_80pct": [round(budget * np.exp(pred + lo80)), round(budget * np.exp(pred + hi80))],
         "range_based_on": f"forecast errors on {len(errors)} past films the model had not seen",
         "trained_on_films": len(past),
-        "tier_probabilities": dict(zip(TIERS, np.round(m["tiers"].predict_proba(film[FEATURES])[0], 2).tolist())),
+        "tier_probabilities": tier_probabilities(pred, errors),
         "main_drivers": drivers,
         "comparables": [
             {"title": c.title, "studio": c.studio, "year": int(c.year), "budget": int(c.budget),

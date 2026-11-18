@@ -7,7 +7,7 @@
   "rating": "R",
   "director": "Tony Gilroy",
   "competing_releases_that_week": 48,
-  "forecast_most_likely": 41743401,
+  "forecast_central": 41743401,
   "forecast_multiple": 1.16,
   "forecast_range_50pct": [
     12761750,
@@ -20,9 +20,9 @@
   "range_based_on": "forecast errors on 155 past films the model had not seen",
   "trained_on_films": 205,
   "tier_probabilities": {
-    "underperform (<1x budget)": 0.19,
-    "solid (1-3x)": 0.56,
-    "breakout (>3x)": 0.25
+    "underperform (<1x budget)": 0.56,
+    "solid (1-3x)": 0.3,
+    "breakout (>3x)": 0.14
   },
   "main_drivers": [
     {

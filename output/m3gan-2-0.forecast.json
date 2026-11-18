@@ -7,7 +7,7 @@
   "rating": "PG-13",
   "director": "Gerard Johnstone",
   "competing_releases_that_week": 47,
-  "forecast_most_likely": 174118530,
+  "forecast_central": 174118530,
   "forecast_multiple": 11.61,
   "forecast_range_50pct": [
     67252547,
@@ -20,9 +20,9 @@
   "range_based_on": "forecast errors on 127 past films the model had not seen",
   "trained_on_films": 187,
   "tier_probabilities": {
-    "underperform (<1x budget)": 0.0,
-    "solid (1-3x)": 0.04,
-    "breakout (>3x)": 0.96
+    "underperform (<1x budget)": 0.02,
+    "solid (1-3x)": 0.16,
+    "breakout (>3x)": 0.82
   },
   "main_drivers": [
     {

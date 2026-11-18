@@ -3,3 +3,4 @@ films.csv
 __pycache__/
 .pytest_cache/
 .cache/
+.streamlit/secrets.toml

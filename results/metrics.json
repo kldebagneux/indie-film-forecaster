@@ -13,9 +13,15 @@
     "linear_model_ridge": 2.22,
     "gradient_boosting": 2.42
   },
-  "outcome_accuracy": {
+  "outcome_odds_score_brier_lower_is_better": {
+    "base_rates_only": 0.71,
+    "separate_classifier_old": 0.712,
+    "from_tested_error_spread": 0.645
+  },
+  "outcome_most_likely_correct": {
     "always_guess_most_common": 0.34,
-    "gradient_boosting_classifier": 0.44
+    "separate_classifier_old": 0.44,
+    "from_tested_error_spread": 0.39
   },
   "range_coverage": {
     "50pct_range_contained_actual": 0.44,

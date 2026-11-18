@@ -7,7 +7,7 @@
   "rating": "R",
   "director": "Scott Beck",
   "competing_releases_that_week": 93,
-  "forecast_most_likely": 30838690,
+  "forecast_central": 30838690,
   "forecast_multiple": 3.08,
   "forecast_range_50pct": [
     14073814,
@@ -20,9 +20,9 @@
   "range_based_on": "forecast errors on 108 past films the model had not seen",
   "trained_on_films": 172,
   "tier_probabilities": {
-    "underperform (<1x budget)": 0.34,
-    "solid (1-3x)": 0.33,
-    "breakout (>3x)": 0.33
+    "underperform (<1x budget)": 0.21,
+    "solid (1-3x)": 0.35,
+    "breakout (>3x)": 0.44
   },
   "main_drivers": [
     {
