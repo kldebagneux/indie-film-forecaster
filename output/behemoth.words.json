@@ -1,0 +1,27 @@
+{
+  "headline": "Behemoth! is forecast at about $42M, roughly 1.2x its budget, but the odds lean lower than that figure",
+  "bottom_line": "The best single estimate is about $41.7M, or 1.16x the $36M budget. Past misses on forecasts like this were more often too high than too low, so the odds are more cautious: a 56% chance of finishing under 1x budget, 30% of landing at 1-3x, and 14% of topping 3x. Plan around a modest base case and treat a breakout as an upside, not the expectation.",
+  "helping": [
+    "The longer runtime (127 min vs a typical 107) nudges the forecast up about 7%.",
+    "Three of the five closest comparable films reached about 1.9-2.1x their budgets (Lawless, Mary Queen of Scots, Her).",
+    "There is a real breakout chance, at 14% for more than 3x budget."
+  ],
+  "holding_back": [
+    "The $36M budget is well above the typical $14M in our data, which pulls the forecast down about 32%.",
+    "Not being a sequel or franchise film lowers it about 23%.",
+    "Not being a horror film lowers it about 10%, and not being a thriller about 5%."
+  ],
+  "comparables_read": "The comparables are split. The two with budgets closest to Behemoth!'s (She Said at $32M and T\u00c1R at $35M) reached only 0.4x and 0.8x their budgets. The three cheaper films (Lawless, Mary Queen of Scots, Her) reached about 2x. This suggests the higher budget is the main hurdle, and it fits the lean toward under 1x in the odds.",
+  "risks": [
+    "The range is very wide: the middle 50% of outcomes runs from about $12.8M to $73.2M (0.35x to 2.0x budget).",
+    "The 80% range runs from about $6.8M to $152.4M (0.19x to 4.2x budget), so a big surprise either way is possible.",
+    "Past forecast misses leaned too high, so the $41.7M central figure may be optimistic.",
+    "48 other releases open the same week, which could make it harder to stand out."
+  ],
+  "actions": [
+    "Set internal expectations around roughly 1x budget, not the 1.16x central forecast.",
+    "Treat 2x budget (about $72M) as a strong outcome and 3x as a stretch goal.",
+    "Lean on what the comparables suggest works: the cheaper ones that did well were adult-skewing, prestige-style dramas.",
+    "Plan a plan B for the crowded release week, such as early buzz or a clearer hook for the Music|Drama angle."
+  ]
+}

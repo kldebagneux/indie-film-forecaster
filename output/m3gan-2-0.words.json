@@ -1,0 +1,24 @@
+{
+  "headline": "M3GAN 2.0 is forecast at about 11.6x its budget, with strong odds of a breakout but a very wide range",
+  "bottom_line": "The best single estimate is about $174M worldwide on a $15M budget, roughly 11.6x. The odds say 82% breakout (over 3x budget), but past forecasts missed high more often than low, so the odds may lean a bit lower than that central number; the realistic range is wide, from about $67M to $342M for the middle half of outcomes.",
+  "helping": [
+    "Being part of a franchise is the biggest lift, moving the forecast up about 2.7x.",
+    "The director's earlier films earned about 15.1x their budget, lifting the forecast about 29%.",
+    "Thriller genre, a director with films in the data, and a 120-minute runtime each add about 7%."
+  ],
+  "holding_back": [
+    "Nothing in the data pulls the forecast down in a meaningful way.",
+    "The 47 competing releases that week are a watch item, though the data does not show a measured drag from them."
+  ],
+  "comparables_read": "Five Blumhouse horror titles with similar budgets ($5M-$20M) earned 11.8x to 32.4x their budgets, including Insidious: The Red Door at 11.8x and Five Nights at Freddy's at 14.9x. Our 11.6x forecast sits at the low end of that group, which is a sensible read since those films are mostly franchise hits that did well.",
+  "risks": [
+    "The 80% range is huge, from about $28M (under 2x budget) to $743M, so the exact total is very uncertain.",
+    "Past forecasts ran too high more often than too low, especially for smaller releases, so treat the central number as the optimistic side.",
+    "The system learned from only 187 films, and the five comparables are all horror films, while this one is action and sci-fi leaning."
+  ],
+  "actions": [
+    "Plan marketing around a breakout, but keep a fallback plan in the 3x-6x budget range.",
+    "Lean on franchise and director track record in messaging.",
+    "Reassess the plan once opening-week tracking is available, since the range is too wide to lock in a number now."
+  ]
+}
