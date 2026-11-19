@@ -1,9 +1,14 @@
 [theme]
 base = "dark"
 backgroundColor = "#0b0b0b"
-secondaryBackgroundColor = "#121212"
-textColor = "#f2f0ea"
-primaryColor = "#c8412d"
+secondaryBackgroundColor = "#161616"
+textColor = "#ece9e2"
+primaryColor = "#4a4741"
+borderColor = "#2a2a2a"
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap, sans-serif"
+headingFont = "Inter, sans-serif"
+headingFontWeights = [700, 600, 600, 600, 600, 600]
+baseRadius = "small"
 
 [browser]
 gatherUsageStats = false
