@@ -2,7 +2,7 @@
 
 **Try it:** [indie-film-forecaster.streamlit.app](https://indie-film-forecaster.streamlit.app) (private, access on request)
 
-How far can you get forecasting an indie film's box office with only public data? And can an AI agent turn that forecast into something a marketing team would actually read?
+A small project to see how well you can forecast an indie film’s box office with public data, and then have Claude turn the forecast into a one-page brief for a marketing team.
 
 You give it a film's details before release: budget, genre, rating, release date, director and so on. It gives you:
 
@@ -49,7 +49,7 @@ So when it says "probably between $14M and $61M", that's roughly what it means.
 
 I tested shifting the central forecast down to correct for that lean. It made the forecasts less accurate (2.39x vs 2.22x), because the lean comes mostly from a few tiny releases, so the single number stays as it is and the odds carry the caution.
 
-Here is the brief for Heretic, made using only films released before it. Claude wrote the text without knowing the real result; every number and chart comes from Python:
+Here is the brief for Heretic, made using only films released before it. Claude wrote the text without knowing the real result, every number and chart comes from Python:
 
 ![The one-page brief for Heretic](results/brief_heretic.png)
 
