@@ -1,22 +1,26 @@
-# Indie film box office forecaster
+# Indie Film Forecaster
+
+**Try it:** [indie-film-forecaster.streamlit.app](https://indie-film-forecaster.streamlit.app) (private, access on request)
 
 How far can you get forecasting an indie film's box office with only public data? And can an AI agent turn that forecast into something a marketing team would actually read?
 
 You give it a film's details before release: budget, genre, rating, release date, director and so on. It gives you:
 
-- a likely box office number
+- a central box office forecast
 - a range that has been checked against reality
 - the odds of underperforming, doing fine or breaking out
 - what is pushing the forecast up or down
 - the five most similar past films
 
-Then Claude writes a one-page brief from that, in plain English.
+Then Claude writes a one-page brief from that, in plain English, for a marketing team.
 
 ![Every 2025 film: forecast range vs what it actually earned](results/backtest_2025.png)
 
 *Every 2025 release in the data, forecast using only films released before 2025. The bars are the 50% and 80% ranges, the black tick is the forecast and the dot is what the film actually earned.*
 
 ## Results
+
+*All numbers in this README come from data pulled from TMDB on 12 November 2026. The live app downloads fresh data, so its figures can differ slightly.*
 
 I tested it the way it would actually be used. For each year from 2019 to 2025, the model learned only from films released before that year, then forecast that year's films. That gives 101 test films it had never seen. I left 2020 and 2021 out as test years because theaters were closed or half empty, but those films are still used for training.
 
@@ -26,14 +30,14 @@ I tested it the way it would actually be used. For each year from 2019 to 2025, 
 | Linear model | **2.22x** |
 | Gradient boosting | 2.42x |
 
-**Are the odds honest?** The odds of each outcome (under 1x, 1–3x, over 3x budget) come from the same past misses as the range. I first used a separate classifier for this. It picked the right outcome 44% of the time, but its probabilities were no better than quoting base rates (Brier score 0.712 vs 0.710, lower is better), and when it said "80%+ likely" it was right only 58% of the time. Building the odds from the tested error spread scores 0.645, and keeps the odds consistent with the range.
-
 **Are the ranges honest?** The range comes from how far off the forecasts were on films the model hadn't seen, not from how well it fits its own training data. Tested the same way:
 
 - the **50% range** contained the real result for **44%** of films
 - the **80% range** contained it for **78%**
 
 So when it says "probably between $14M and $61M", that's roughly what it means.
+
+**Are the odds honest?** The odds of each outcome (under 1x, 1–3x, over 3x budget) come from the same past misses as the range. I first used a separate classifier for this. It picked the right outcome 44% of the time, but its probabilities were no better than quoting base rates (Brier score 0.712 vs 0.710, lower is better), and when it said "80%+ likely" it was right only 58% of the time. Building the odds from the tested error spread scores 0.645, and keeps the odds consistent with the range.
 
 **Where it goes wrong:** almost all the big misses are tiny releases that made under $5M, like *Highest 2 Lowest* (mostly streaming) or *Anemone*. Excluding those, the 50% range held 52% of the time. The public data can't tell a wide release from a small one before it opens, and that's exactly what a studio's own release plan would fix (see below).
 
@@ -45,7 +49,11 @@ So when it says "probably between $14M and $61M", that's roughly what it means.
 
 I tested shifting the central forecast down to correct for that lean. It made the forecasts less accurate (2.39x vs 2.22x), because the lean comes mostly from a few tiny releases, so the single number stays as it is and the odds carry the caution.
 
-The briefs for all three are in [`output/`](output).
+Here is the brief for Heretic, made using only films released before it. Claude wrote the text without knowing the real result; every number and chart comes from Python:
+
+![The one-page brief for Heretic](results/brief_heretic.png)
+
+The briefs for all three films are in [`output/`](output) (download an `.html` file and open it in a browser).
 
 ## How it works
 
