@@ -98,71 +98,103 @@ def words_for(result_json):
 
 # ---------- Page ----------
 df, errors, all_genres = load()
+has_claude = bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"))
 
-st.title("Indie film box office forecaster")
-st.caption(f"Trained on {len(df)} releases from A24 and similar studios (2012–2025). "
-           "Typically off by about 2x, so read the range, not just the number.")
 
-with st.expander("How to read this"):
-    st.markdown(
-        "- **Central forecast**: the single best estimate of worldwide box office.\n"
-        "- **Ranges**: built from how far off the forecasts were on past films the model had not seen. "
-        "In testing, the 50% range held the real result 44% of the time and the 80% range 78%.\n"
-        "- **Odds**: from the same past misses, so they can lean lower than the central forecast "
-        "(past misses were more often too high, mostly on small releases).\n"
-        "- **Check the model on a past film** to see a forecast made using only films released before it, "
-        "next to what the film actually earned.")
+def show(result, slot):
+    """The answer: three key numbers first, then Claude's brief (optional), then the full page."""
+    budget, central = result["budget"], result["forecast_central"]
+    low, high = result["forecast_range_50pct"]
+    odds = list(result["tier_probabilities"].values())
 
-mode = st.radio("What do you want to do?", ["Forecast a new film", "Check the model on a past film"],
-                horizontal=True, label_visibility="collapsed")
+    st.subheader(f"Forecast for {result['film']}")
+    def usd(x): return fc.money(x).replace("$", "\\$")   # a bare $ would turn into maths formatting
 
-if mode == "Forecast a new film":
-    studios = sorted(df.studio.unique())
-    with st.form("film"):
-        title = st.text_input("Title", "Behemoth!")
-        c1, c2 = st.columns(2)
-        studio = c1.selectbox("Studio", studios, index=studios.index("Searchlight Pictures"))
-        release = c2.date_input("Release date", dt.date(2026, 12, 2))
-        budget = c1.number_input("Budget ($M)", min_value=0.1, value=36.0, step=1.0)
-        runtime = c2.number_input("Runtime (minutes)", min_value=60, max_value=240, value=127)
-        genres = c1.multiselect("Genres", all_genres, default=["Music", "Drama"])
-        rating = c2.selectbox("US rating", ["R", "PG-13", "PG", "G", "NR"])
-        director = c1.text_input("Director", "Tony Gilroy")
-        competitors = c2.number_input("Other films opening that week (0 = use the usual for that month)",
-                                      min_value=0, value=0)
-        is_sequel = st.checkbox("Sequel or part of a franchise")
-        submitted = st.form_submit_button("Forecast", type="primary")
-    if submitted:
-        info = {"title": title, "studio": studio, "release_date": str(release), "budget": budget * 1e6,
-                "genres": genres, "rating": rating, "runtime": runtime, "director": director.strip(),
-                "is_sequel": is_sequel, "competitors": competitors or None}
-        try:
-            st.session_state.result = fc.forecast_new(df, info, errors)
-        except ValueError as e:
-            st.error(str(e))
-else:
-    choices = sorted(df[df.year >= 2017].title)
-    title = st.selectbox("Pick a released film. The model only sees films released before it.",
-                         choices, index=choices.index("Heretic"))
-    st.session_state.result = backtest(title)
+    c1, c2, c3 = st.columns(3)
+    note = dict(delta_color="off", delta_arrow="off", border=True)
+    c1.metric("Central forecast", usd(central), f"{central / budget:.1f}x its budget", **note)
+    c2.metric("Likely range", f"{usd(low)}–{usd(high)}", "half of outcomes land here", **note)
+    c3.metric("Chance of a breakout (>3x)", f"{odds[2]:.0%}", f"under budget: {odds[0]:.0%}", **note)
 
-result = st.session_state.get("result")
-if result:
-    words = None
-    if os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"):
-        if st.toggle("Add Claude's written read for the marketing team"):
-            key = json.dumps(result, sort_keys=True)
-            if key in st.session_state.setdefault("written", set()) or take_brief_credit():
+    actual = result.get("actual_revenue_for_checking")
+    if actual:
+        inside = low <= actual <= high
+        msg = (f"**What actually happened:** {usd(actual)} ({actual / budget:.1f}x its budget), "
+               f"{'inside' if inside else 'outside'} the likely range.")
+        (st.success if inside else st.warning)(msg)
+
+    key = json.dumps(result, sort_keys=True)
+    written = st.session_state.setdefault("written", {})
+    if has_claude and key not in written:
+        if st.button("✍️  Write the marketing brief with Claude", key=f"claude_{slot}", width="stretch"):
+            if take_brief_credit():
                 try:
-                    words = words_for(key)
-                    st.session_state.written.add(key)
+                    written[key] = words_for(key)
+                    st.rerun()   # redraw without the button, with Claude's text in the brief
                 except Exception as e:
                     st.warning(f"Couldn't get the written read: {e}")
             else:
-                st.warning("Today's limit of written briefs is used up. The numbers below are still live.")
-    else:
-        st.info("Claude's written read is off (no Anthropic key set).")
+                st.warning("Today's limit of written briefs is used up. The numbers are still live.")
+    words = written.get(key)
 
-    page = brief.render_html(result, words)
-    st.download_button("Download this brief (HTML)", page, file_name=f"{result['film']} brief.html", mime="text/html")
-    st.iframe(page)   # every film detail and Claude's text are HTML-escaped by render_html
+    page = brief.render_html(result, words, no_words_note="")
+    with st.expander("📄  Full one-page brief", expanded=True):
+        st.download_button("Download this brief", page, file_name=f"{result['film']} brief.html",
+                           mime="text/html", key=f"download_{slot}")
+        st.iframe(page)   # every film detail and Claude's text are HTML-escaped by render_html
+
+
+st.title("🎬 Indie film forecaster")
+st.markdown("Enter a film's details **before release**. You get a box office forecast, an honest range, "
+            "and the odds of each outcome. Claude can then write a one-page brief for the marketing team.")
+
+with st.expander("How accurate is it?"):
+    st.markdown(
+        f"- Trained on **{len(df)} releases** from A24 and similar studios (2012–2025), public data only.\n"
+        "- Tested on 101 films it had never seen: typically off by about **2x**. Read the range, not just the number.\n"
+        "- The likely range held the real result **44%** of the time (it aims for 50%).\n"
+        "- The odds can lean lower than the central forecast: past misses were more often too high, "
+        "mostly on small releases.\n"
+        "- Use the **Test it on a past film** tab to see a forecast next to what really happened.")
+
+tab_new, tab_past = st.tabs(["Forecast a new film", "Test it on a past film"])
+
+with tab_new:
+    with st.form("film"):
+        title = st.text_input("Film title", "Behemoth!")
+        c1, c2 = st.columns(2)
+        budget = c1.number_input("Budget ($ millions)", min_value=0.1, value=36.0, step=1.0, format="%.1f")
+        release = c2.date_input("Release date", dt.date(2026, 12, 2))
+        genres = c1.multiselect("Genres", all_genres, default=["Music", "Drama"])
+        rating = c2.selectbox("US rating", ["R", "PG-13", "PG", "G", "NR"])
+        is_sequel = st.checkbox("It's a sequel or part of a franchise")
+        with st.expander("More details (optional)"):
+            studios = sorted(df.studio.unique())
+            d1, d2 = st.columns(2)
+            director = d1.text_input("Director", "Tony Gilroy",
+                                     help="Used only if they have earlier films in the data.")
+            studio = d2.selectbox("Studio", studios, index=studios.index("Searchlight Pictures"))
+            runtime = d1.number_input("Runtime (minutes)", min_value=60, max_value=240, value=127)
+            competitors = d2.number_input("Films opening the same week", min_value=0, value=0,
+                                          help="Leave at 0 if you don't know: the usual number for that month is used.")
+        submitted = st.form_submit_button("Get the forecast", type="primary", width="stretch")
+    if submitted:
+        if not genres:
+            st.error("Pick at least one genre.")
+        else:
+            info = {"title": title.strip() or "Untitled", "studio": studio, "release_date": str(release),
+                    "budget": budget * 1e6, "genres": genres, "rating": rating, "runtime": runtime,
+                    "director": director.strip(), "is_sequel": is_sequel, "competitors": competitors or None}
+            try:
+                st.session_state.new_result = fc.forecast_new(df, info, errors)
+            except ValueError as e:
+                st.error(str(e))
+    if st.session_state.get("new_result"):
+        show(st.session_state.new_result, "new")
+
+with tab_past:
+    st.markdown("Pick a released film. The forecast uses **only films released before it**, "
+                "so you can see how it would have done.")
+    choices = sorted(df[df.year >= 2017].title)
+    past_title = st.selectbox("Film", choices, index=choices.index("Heretic"))
+    show(backtest(past_title), "past")

@@ -78,7 +78,7 @@ h1{font-size:72px;line-height:.95;margin:14px 0 14px;letter-spacing:-.04em;font-
 .lede{color:#c9c6be;margin:0 0 30px;max-width:680px}
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:22px}
 .kpi{background:var(--bg);padding:20px}
-.kpi b{display:block;font-size:34px;letter-spacing:-.03em;font-weight:700}.kpi span{color:var(--muted);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
+.kpi b{display:block;font-size:clamp(22px,4vw,34px);white-space:nowrap;letter-spacing:-.03em;font-weight:700}.kpi span{color:var(--muted);font-size:11px;letter-spacing:.18em;text-transform:uppercase}
 .card{background:var(--card);border:1px solid var(--line);padding:22px;margin-bottom:16px}
 h2{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;font-weight:600}
 .range{position:relative;height:74px;margin:30px 6px 6px}
@@ -119,7 +119,8 @@ footer{color:#66635c;font-size:11px;margin-top:34px;line-height:1.6;border-top:1
 """
 
 
-def render_html(forecast, words=None):
+def render_html(forecast, words=None,
+                no_words_note="Numbers only: add an Anthropic API key to get the written read."):
     """Build the one-page brief. Without words (no API key), the text sections are left out."""
     e, money = html.escape, fc.money
     actual = forecast.get("actual_revenue_for_checking")
@@ -178,7 +179,7 @@ def render_html(forecast, words=None):
   <div class="card"><h2>Suggested actions</h2><ol>{items(words["actions"])}</ol></div>
 </div>"""
     else:
-        intro = '<p class="lede" style="margin-top:30px">Numbers only: add an Anthropic API key to get the written read.</p>'
+        intro = f'<p class="lede" style="margin-top:30px">{e(no_words_note)}</p>' if no_words_note else ""
         helping = comp_read = closing = ""
 
     metrics_path = fc.ROOT / "results" / "metrics.json"
