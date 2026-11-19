@@ -12,7 +12,7 @@ You give it a film's details before release: budget, genre, rating, release date
 - what is pushing the forecast up or down
 - the five most similar past films
 
-Then Claude writes a one-page brief from that, in plain English, for a marketing team.
+Then Claude writes a one-page brief for a marketing team.
 
 ![Every 2025 film: forecast range vs what it actually earned](results/backtest_2025.png)
 
