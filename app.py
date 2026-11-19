@@ -149,7 +149,8 @@ else:
 result = st.session_state.get("result")
 if result:
     words = None
-    if os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"):
+    has_key = bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN"))
+    if has_key:
         if st.toggle("Add Claude's written read for the marketing team"):
             key = json.dumps(result, sort_keys=True)
             if key in st.session_state.setdefault("written", set()) or take_brief_credit():
@@ -163,6 +164,6 @@ if result:
     else:
         st.info("Claude's written read is off (no Anthropic key set).")
 
-    page = brief.render_html(result, words)
+    page = brief.render_html(result, words, no_words_note="") if has_key else brief.render_html(result, words)
     st.download_button("Download this brief (HTML)", page, file_name=f"{result['film']} brief.html", mime="text/html")
     st.iframe(page)   # every film detail and Claude's text are HTML-escaped by render_html
